@@ -11,8 +11,30 @@
         <Grid.Background>
             <ImageBrush ImageSource="/187161.bmp"/>
         </Grid.Background>
-        <TabControl Margin="0,49,0,44" Background="#88100F0F">
-            <TabItem Style="{DynamicResource TabItem}" x:Name="SystemTab" Header="System" Foreground="Black" Margin="-2,-2,-7,0" Background="#00000000" BorderBrush="Transparent" />
+        <TabControl Margin="0,49,0,44" Background="#88100F0F" SelectionChanged="TabControl_SelectionChanged">
+            <TabItem Style="{DynamicResource TabItem}" x:Name="SystemTab" Header="System" Foreground="Black" Margin="-2,-2,-7,0" Background="#00000000" BorderBrush="Transparent">
+                <Grid Background="#00FFFFFF">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="ProcessorLabel" Content="Processor Type" Grid.Column="0" FontSize="15" FontWeight="Bold" Margin="74,51,52,51" Grid.Row="0" Grid.RowSpan="3"/>
+                    <Label x:Name="ProcessorData" Content="Processor Type" Grid.Column="1" FontSize="15" Margin="74,51,52,51" Grid.ColumnSpan="3" Grid.RowSpan="3" Grid.Row="0"/>
+                </Grid>
+            </TabItem>
             <TabItem x:Name="WindowsTab" Style="{DynamicResource TabItem}" Header="Windows" Margin="6,-2,-6,0" Background="#00000000" BorderBrush="#00ACACAC">
                 <Grid Background="#05100F0F">
                     <Grid.ColumnDefinitions>

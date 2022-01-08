@@ -20,10 +20,10 @@
         </LinearGradientBrush>
         <SolidColorBrush x:Key="TabItem.Static.Border" Color="#ACACAC"/>
         <LinearGradientBrush x:Key="TabItem.MouseOver.Background" EndPoint="0,1" StartPoint="0,0">
-            <GradientStop Color="#ECF4FC" Offset="0.0"/>
-            <GradientStop Color="#DCECFC" Offset="1.0"/>
+            <GradientStop Color="#00FFFFFF" Offset="0.0"/>
+            <GradientStop Color="#00FFFFFF" Offset="1.0"/>
         </LinearGradientBrush>
-        <SolidColorBrush x:Key="TabItem.MouseOver.Border" Color="#7EB4EA"/>
+        <SolidColorBrush x:Key="TabItem.MouseOver.Border" Color="#ACACAC"/>
         <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#00FFFFFF"/>
         <SolidColorBrush x:Key="TabItem.Selected.Border" Color="#ACACAC"/>
         <SolidColorBrush x:Key="TabItem.Disabled.Background" Color="#F0F0F0"/>

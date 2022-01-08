@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,6 +39,23 @@ namespace WinReporter
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             MachineNameLabel.Content = Environment.MachineName.ToString();
+            ProcessorData.Content = GetProcessorData("name");
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        public string GetProcessorData(string data)
+        {
+            ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM WIN32_Processor");
+            ManagementObjectCollection moc = mos.Get();
+            foreach(ManagementObject m in moc)
+            {
+                return m[data].ToString();
+            }
+            return null;
         }
     }
 }
