@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
@@ -40,6 +41,13 @@ namespace WinReporter
         {
             MachineNameLabel.Content = Environment.MachineName.ToString();
             ProcessorData.Content = GetProcessorData("name");
+            ManufacturerData.Content = GetManModel("Manufacturer");
+            ModelNumberData.Content = GetManModel("Model");
+            CoreCountData.Content = GetProcessorData("NumberOfCores");
+            SerialNumberData.Content = GetSerialNumber();
+            VersionData.Content = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows NT\CurrentVersion", "ProductName", null).ToString() + " Build " + Environment.OSVersion.Version.Build.ToString();
+            ProductIdData.Content = GetProductId();
+
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -56,6 +64,53 @@ namespace WinReporter
                 return m[data].ToString();
             }
             return null;
+        }
+
+        public string GetManModel(string data)
+        {
+            ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
+            ManagementObjectCollection mcoc = mc.GetInstances();
+            if (mcoc.Count != 0)
+            {
+                foreach (ManagementObject m in mcoc)
+                {
+                    return m[data].ToString();
+                }
+            }
+            return null;
+        }
+
+        public string GetSerialNumber()
+        {
+            ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BaseBoard");
+            foreach (ManagementObject m in mos.Get())
+            {
+                if (m["SerialNumber"].ToString().Length > 5)
+                {
+                    return m["SerialNumber"].ToString();
+                } else
+                {
+                    return "Not Available";
+                }
+            }
+            return "Not Available";
+        }
+
+        public string GetProductId()
+        {
+            ManagementObjectSearcher moc = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_OperatingSystem");
+            ManagementObjectCollection mc = moc.Get();
+            foreach (ManagementObject m in mc)
+            {
+                foreach (PropertyData data in m.Properties)
+                {
+                    if (data.Name == "SerialNumber")
+                    {
+                        return data.Value.ToString();
+                    }
+                }
+            }
+            return string.Empty;
         }
     }
 }

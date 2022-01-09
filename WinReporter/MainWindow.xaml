@@ -9,11 +9,44 @@
         Title="WinReporter" Height="600" Width="1000">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/187161.bmp"/>
+            <ImageBrush ImageSource="/assets/010822.jpg"/>
         </Grid.Background>
         <TabControl Margin="0,49,0,44" Background="#88100F0F" SelectionChanged="TabControl_SelectionChanged">
-            <TabItem Style="{DynamicResource TabItem}" x:Name="SystemTab" Header="System" Foreground="Black" Margin="-2,-2,-7,0" Background="#00000000" BorderBrush="Transparent">
+            <TabItem Style="{DynamicResource TabItem}" x:Name="SystemTab" Header="System" Foreground="White" Margin="-1,0,-4,0" Background="#00000000" BorderBrush="Transparent">
                 <Grid Background="#00FFFFFF">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="266*" />
+                        <ColumnDefinition Width="231*" />
+                        <ColumnDefinition Width="249*" />
+                        <ColumnDefinition Width="249*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="ManufacturerLabel" Content="Manufacturer" Grid.Column="0" FontSize="15" FontWeight="Bold" Grid.Row="1" Foreground="White" />
+                    <Label x:Name="ManufacturerData" Content="Manufacturer" Grid.Column="1" FontSize="15" Grid.Row="1" Grid.ColumnSpan="2" Foreground="White"/>
+                    <Label x:Name="ModelNumberLabel" Content="Model Number" Grid.Column="0" FontSize="15" FontWeight="Bold" Grid.Row="2" Foreground="White" />
+                    <Label x:Name="ModelNumberData" Content="Model Number" Grid.Column="1" FontSize="15" Grid.ColumnSpan="2" Grid.Row="2" Foreground="White" />
+                    <Label x:Name="SerialNumberLabel" Content="Serial Number" Grid.Column="0" FontSize="15" Grid.Row="3" Foreground="White" FontWeight="Bold" />
+                    <Label x:Name="SerialNumberData" Content="Serial Number" Grid.Column="1" Grid.ColumnSpan="2" FontSize="15" Grid.Row="3" Foreground="White" />
+                    <Label x:Name="ArchitectureLabel" Content="Architecture" Grid.Column="0" FontSize="15" FontWeight="Bold" Foreground="White" Grid.Row="4" />
+                    <Label x:Name="ArchitectureData" Content="x64" Grid.Column="1" FontSize="15" Foreground="White" Grid.Row="4"/>
+                    <Label x:Name="ProcessorLabel" Content="Processor Type" Grid.Column="0" FontSize="15" FontWeight="Bold" Grid.Row="5" Foreground="White"/>
+                    <Label x:Name="ProcessorData" Content="Processor Type" Grid.Column="1" FontSize="15" Grid.ColumnSpan="3" Grid.Row="5" Foreground="White"/>
+                    <Label x:Name="CoreCountLabel" Content="Core Count" Grid.Column="0" FontSize="15" FontWeight="Bold" Foreground="White" Grid.Row="6" />
+                    <Label x:Name="CoreCountData" Content="Core Count" Grid.Column="1" FontSize="15" Foreground="White" Grid.Row="6" />
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="WindowsTab" Style="{DynamicResource TabItem}" Header="Windows" Margin="4,0,-10,0" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
+                <Grid Background="#05100F0F">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -27,25 +60,20 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Label x:Name="ProcessorLabel" Content="Processor Type" Grid.Column="0" FontSize="15" FontWeight="Bold" Margin="74,51,52,51" Grid.Row="0" Grid.RowSpan="3"/>
-                    <Label x:Name="ProcessorData" Content="Processor Type" Grid.Column="1" FontSize="15" Margin="74,51,52,51" Grid.ColumnSpan="3" Grid.RowSpan="3" Grid.Row="0"/>
+                    <Label x:Name="Title" Content="Windows OS Information" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" FontSize="25" Margin="15,0,0,0" FontWeight="Bold" Foreground="White" />
+                    <Label x:Name="VersionLabel" Content="Version" Grid.Column="0" Grid.Row="1" FontSize="15" FontWeight="Bold" Foreground="White" />
+                    <Label x:Name="VersionData" Content="Version" Grid.Column="1" Grid.Row="1" FontSize="15" Foreground="White" Grid.ColumnSpan="3" />
+                    <Label x:Name="ProductIdLabel" Content="Product Id" Grid.Column="0" Grid.Row="2" FontSize="15" FontWeight="Bold" Foreground="White" />
+                    <Label x:Name="ProductIdData" Content="ProductId" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" FontSize="15" Foreground="White" />
                 </Grid>
             </TabItem>
-            <TabItem x:Name="WindowsTab" Style="{DynamicResource TabItem}" Header="Windows" Margin="6,-2,-6,0" Background="#00000000" BorderBrush="#00ACACAC">
-                <Grid Background="#05100F0F">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                </Grid>
+            <TabItem x:Name="DrivesTab" Style="{DynamicResource TabItem}" Header="Drives" Margin="10,0,-15,0" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
+                
             </TabItem>
         </TabControl>
         <Button Content="Exit" Margin="0,0,10,12" Background="#FF3A3838" Foreground="White" FontSize="20" FontFamily="Calibri" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="140" Click="Button_Click"/>
-        <Label x:Name="MachineNameLabel" Content="MachineName" Margin="0,12,135,0" FontSize="20" HorizontalAlignment="Right" Width="202" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="0.594,-0.323" Height="37" VerticalAlignment="Top"/>
+        <Label x:Name="MachineNameLabel" Content="MachineName" Margin="0,12,135,0" FontSize="20" HorizontalAlignment="Right" Width="202" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="0.594,-0.323" Height="37" VerticalAlignment="Top" Foreground="White"/>
 
     </Grid>
 </Window>
