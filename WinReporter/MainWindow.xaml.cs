@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Text;
@@ -37,6 +39,8 @@ namespace WinReporter
             this.Close();
         }
 
+
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             MachineNameLabel.Content = Environment.MachineName.ToString();
@@ -47,7 +51,80 @@ namespace WinReporter
             SerialNumberData.Content = GetSerialNumber();
             VersionData.Content = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows NT\CurrentVersion", "ProductName", null).ToString() + " Build " + Environment.OSVersion.Version.Build.ToString();
             ProductIdData.Content = GetProductId();
-
+            TotalMemoryData.Content = new ManagementObjectSearcher("SELECT Capacity FROM Win32_PhysicalMemory").Get().Cast<ManagementObject>().Sum(x => Convert.ToInt64(x.Properties["Capacity"].Value) / 1024 / 1024 / 1024) + " GB";
+            DataTable storageTable = new DataTable("StorageTable");
+            var storageGridView = new GridView();
+            StorageDriveList.View = storageGridView;
+            storageGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Drive",
+                DisplayMemberBinding = new Binding("Drive"),
+                Width = 100
+            });
+            storageGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Available Space",
+                DisplayMemberBinding = new Binding("Available"),
+                Width = 140
+            });
+            storageGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Total Space",
+                DisplayMemberBinding = new Binding("Total"),
+                Width = 140
+            });
+            storageGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "% Used",
+                DisplayMemberBinding = new Binding("Used"),
+                Width = 95
+            });
+            var opticalGridView = new GridView();
+            OpticalDrivesList.View = opticalGridView;
+            opticalGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Drive",
+                DisplayMemberBinding = new Binding("Drive"),
+                Width = 250
+            });
+            opticalGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Name",
+                DisplayMemberBinding = new Binding("Name"),
+                Width = 250
+            });
+            LoadStorageData();
+            var memoryGridView = new GridView();
+            MemoryList.View = memoryGridView;
+            memoryGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Location",
+                DisplayMemberBinding = new Binding("Location"),
+                Width = 200
+            });
+            memoryGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Manufacturer",
+                DisplayMemberBinding = new Binding("Manufacturer"),
+                Width = 200
+            });
+            memoryGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Part Number",
+                DisplayMemberBinding = new Binding("PartNumber"),
+                Width = 200
+            });
+            memoryGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Capacity",
+                DisplayMemberBinding = new Binding("Capacity"),
+                Width = 200
+            });
+            GenerateMemoryInfo();
+            GraphicsCardData.Content = LoadVideoData("Name");
+            VideoRamData.Content = LoadVideoData("AdapterRAM");
+            RefreshRateData.Content = LoadVideoData("CurrentRefreshRate");
+            ResolutionData.Content = LoadVideoData("CurrentVerticalResolution") + " x " + LoadVideoData("CurrentHorizontalResolution");
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -111,6 +188,102 @@ namespace WinReporter
                 }
             }
             return string.Empty;
+        }
+
+        public void LoadStorageData()
+        {
+            DriveInfo[] driveInfos = DriveInfo.GetDrives();
+            foreach (DriveInfo driveInfo in driveInfos)
+            {
+                if (driveInfo.IsReady == true && driveInfo.DriveType.ToString() == "Fixed")
+                {
+                    var availableSpace = driveInfo.AvailableFreeSpace / 1024 / 1024 / 1024;
+                    var totalSpace = driveInfo.TotalSize / 1024 / 1024 / 1024;
+                    var percentAvail = Math.Round((double)(100 * availableSpace) / totalSpace);
+                    StorageDriveList.Items.Add(new ListItemsObjs.DriveItem { Available = availableSpace.ToString(), Drive = driveInfo.RootDirectory.ToString(), Total = totalSpace.ToString(), Used = percentAvail.ToString() });
+                }
+                if (driveInfo.DriveType.ToString() == "CDRom")
+                {
+                    OpticalDrivesList.Items.Add(new ListItemsObjs.OpticalDriveItem { Drive = driveInfo.RootDirectory.ToString(), Name = "CD / DVD Drive" });
+                }
+            }
+        }
+
+        public void GenerateMemoryInfo()
+        {
+            string locator = "";
+            string manufacturer = "";
+            string partnumber = "";
+            string capacity = "";
+            ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMemory");
+            ManagementObjectCollection moc = mos.Get();
+            foreach (ManagementObject m in moc)
+            {
+                foreach (PropertyData pd in m.Properties)
+                {
+                    if (pd.Name == "DeviceLocator")
+                    {
+                        if (pd.Value != null)
+                        {
+                            locator = pd.Value.ToString();
+                        } else
+                        {
+                            locator = "Unknown";
+                        }
+                    }
+                    if (pd.Name == "Manufacturer")
+                    {
+                        if (pd.Value != null)
+                        {
+                            manufacturer = pd.Value.ToString();
+                        } else
+                        {
+                            manufacturer = "Unknown";
+                        }
+                    }
+                    if (pd.Name == "PartNumber")
+                    {
+                        if (pd.Value != null)
+                        {
+                            partnumber = pd.Value.ToString();
+                        } else
+                        {
+                            partnumber = "Unknown";
+                        }
+                    }
+                    if (pd.Name == "Capacity")
+                    {
+                        if (pd.Value != null)
+                        {
+                            capacity = (Convert.ToInt64(pd.Value) / 1024 / 1024 / 1024).ToString();
+                        } else
+                        {
+                            capacity = "Unknown";
+                        }
+                    }
+                }
+                    MemoryList.Items.Add(new ListItemsObjs.MemoryItem { Capacity = capacity + " GB", Location = locator, Manufacturer = manufacturer, PartNumber = partnumber });
+            }
+        }
+
+        public string LoadVideoData(string data)
+        {
+            ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController");
+            foreach (ManagementObject obj in mos.Get())
+            {
+                return obj[data].ToString();
+            }
+            return null;
+        }
+
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBoxResult mbResult = MessageBox.Show("WinReporter ©2022\nAuthor: Kevin Heuser\nIf you have issues or would like to contribute, please reach out at https://github.com/kellog333/winreporter", "Information");
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            TabController.SelectedIndex = 6;
         }
     }
 }

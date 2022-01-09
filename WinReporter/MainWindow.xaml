@@ -11,7 +11,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="/assets/010822.jpg"/>
         </Grid.Background>
-        <TabControl Margin="0,49,0,44" Background="#88100F0F" SelectionChanged="TabControl_SelectionChanged">
+        <TabControl x:Name="TabController" Margin="0,60,0,60" Background="#88100F0F" SelectionChanged="TabControl_SelectionChanged">
             <TabItem Style="{DynamicResource TabItem}" x:Name="SystemTab" Header="System" Foreground="White" Margin="-1,0,-4,0" Background="#00000000" BorderBrush="Transparent">
                 <Grid Background="#00FFFFFF">
                     <Grid.ColumnDefinitions>
@@ -69,11 +69,95 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="DrivesTab" Style="{DynamicResource TabItem}" Header="Drives" Margin="10,0,-15,0" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
+                <Grid Background="#05100F0F">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="64*" />
+                            <RowDefinition Height="359*" />
+                        </Grid.RowDefinitions>
+                        <Label x:Name="StorageDriveLabel" Content="Storage Drives" Grid.Row="0" FontSize="35" FontWeight="Bold" Foreground="White" />
+                        <ListView x:Name="StorageDriveList" Grid.Row="1" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
+                        </ListView>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="64*" />
+                            <RowDefinition Height="359*" />
+                        </Grid.RowDefinitions>
+                        <Label x:Name="OpticalLabel" Content="CD/DVD Drives" Grid.Row="0" FontSize="35" FontWeight="Bold" Foreground="White" />
+                        <ListView x:Name="OpticalDrivesList" Grid.Row="1" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
+                        </ListView>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem  x:Name="MemoryTab" Style="{DynamicResource TabItem}" Header="Memory" Margin="15,0,-20,0" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
+                <Grid Background="#05100F0F">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="85*" />
+                        <RowDefinition Height="380*" />
+                    </Grid.RowDefinitions>
+                    <Grid Background="#05100F0F">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="293*" />
+                            <ColumnDefinition Width="701*" />
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="TotalMemoryLabel" Content="Total Memory" Foreground="White" Grid.Column="0" FontSize="35" FontWeight="Bold" />
+                        <Label x:Name="TotalMemoryData" Content="Total Memory" Foreground="White" Grid.Column="1" FontSize="35" />
+                    </Grid>
+                    <ListView x:Name="MemoryList" Grid.Row="1" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
+                    </ListView>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="VideoTab" Style="{DynamicResource TabItem}" Header="Video" Margin="20,0,-25,0" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
+                <Grid Background="#05100F0F">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="165*" />
+                        <ColumnDefinition Width="829*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="GraphicsCardLabel" Content="Graphics Card" Grid.Column="0" Grid.Row="1" Foreground="White" FontSize="15" FontWeight="Bold" />
+                    <Label x:Name="GraphicsCardData" Content="GraphicsCard" Grid.Column="1" Grid.Row="1" Foreground="White" FontSize="15" />
+                    <Label x:Name="VideoRamLabel" Content="Video RAM" Grid.Column="0" Grid.Row="2" Foreground="White" FontSize="15" FontWeight="Bold" />
+                    <Label x:Name="VideoRamData" Content="VideoRAM" Grid.Column="1" Grid.Row="2" Foreground="White" FontSize="15" />
+                    <Label x:Name="RefreshRateLabel" Content="Refresh Rate" Grid.Column="0" Grid.Row="3" Foreground="White" FontSize="15" FontWeight="Bold" />
+                    <Label x:Name="RefreshRateData" Content="RefreshRate" Grid.Column="1" Grid.Row="3" Foreground="White" FontSize="15" />
+                    <Label x:Name="ResolutionLabel" Content="Resolution" Grid.Column="0" Grid.Row="4" Foreground="White" FontSize="15" FontWeight="Bold" />
+                    <Label x:Name="ResolutionData" Content="Resoltion" Grid.Column="1" Grid.Row="4" Foreground="White" FontSize="15" />
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="NetworkTab" Style="{DynamicResource TabItem}" Header="Network" Margin="25,0,-30,0" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
                 
+            </TabItem>
+            <TabItem x:Name="ReportTab" Style="{DynamicResource TabItem}" Header="Report" Margin="30,0,-35,0" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
+                <Grid Background="#05100F0F">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="PriceLabel" Content="Price" Foreground="White" FontSize="15" FontWeight="Bold" />
+                </Grid>
             </TabItem>
         </TabControl>
         <Button Content="Exit" Margin="0,0,10,12" Background="#FF3A3838" Foreground="White" FontSize="20" FontFamily="Calibri" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="140" Click="Button_Click"/>
+        <Button Content="Report" Margin="0,0,180,12" Background="#FF3A3838" Foreground="White" FontSize="20" FontFamily="Calibri" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="140" Click="Button_Click_1"/>
         <Label x:Name="MachineNameLabel" Content="MachineName" Margin="0,12,135,0" FontSize="20" HorizontalAlignment="Right" Width="202" FontWeight="Bold" FontFamily="Calibri" RenderTransformOrigin="0.594,-0.323" Height="37" VerticalAlignment="Top" Foreground="White"/>
-
+        <Image HorizontalAlignment="Right" Width="31" Height="37" VerticalAlignment="Top" Source="/assets/icons8-info-64.png" Margin="0,12,10,0" MouseDown="Image_MouseDown" />
     </Grid>
 </Window>

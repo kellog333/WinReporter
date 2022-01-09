@@ -10,11 +10,13 @@
   <ItemGroup>
     <None Remove="assets\010822.jpg" />
     <None Remove="assets\187161.bmp" />
+    <None Remove="assets\icons8-info-64.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="187161.bmp" />
     <Resource Include="assets\010822.jpg" />
+    <Resource Include="assets\icons8-info-64.png" />
   </ItemGroup>
 
   <ItemGroup>
