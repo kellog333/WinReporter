@@ -29,5 +29,12 @@ namespace WinReporter
             public string PartNumber { get; set; }
             public string Capacity { get; set; }
         }
+
+        public class NetworkDevice
+        {
+            public string Adapter { get; set; }
+            public string Type { get; set; }
+            public string MacAddress { get; set; }
+        }
     }
 }

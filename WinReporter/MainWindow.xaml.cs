@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,6 +28,8 @@ namespace WinReporter
         public MainWindow()
         {
             InitializeComponent();
+            this.Height = SystemParameters.PrimaryScreenHeight * 0.55;
+            this.Width = SystemParameters.PrimaryScreenWidth * 0.600;
         }
 
         private void TabControl_Selected(object sender, RoutedEventArgs e)
@@ -121,6 +124,13 @@ namespace WinReporter
                 Width = 200
             });
             GenerateMemoryInfo();
+            var networkGridView = new GridView();
+            NetworkList.View = networkGridView;
+            networkGridView.Columns.Add(new GridViewColumn { Header = "Adapter", Width = 200, DisplayMemberBinding = new Binding("Adapter") });
+            networkGridView.Columns.Add(new GridViewColumn { Header = "Type", Width = 150, DisplayMemberBinding = new Binding("Type") });
+            networkGridView.Columns.Add(new GridViewColumn { Header = "MAC Address", Width = 150, DisplayMemberBinding = new Binding("MacAddress") });
+            GenerateNetworkAdapters();
+            FileLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + MachineNameLabel.Content.ToString() + "_" + DateTime.Today.ToString("d").Replace("/","-") + ".pdf";
             GraphicsCardData.Content = LoadVideoData("Name");
             VideoRamData.Content = LoadVideoData("AdapterRAM");
             RefreshRateData.Content = LoadVideoData("CurrentRefreshRate");
@@ -266,6 +276,18 @@ namespace WinReporter
             }
         }
 
+        public void GenerateNetworkAdapters()
+        {
+            NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (NetworkInterface networkInterface in networkInterfaces)
+            {
+                if (networkInterface.NetworkInterfaceType.ToString() != "Loopback")
+                {
+                    NetworkList.Items.Add(new ListItemsObjs.NetworkDevice { Adapter = networkInterface.Description.ToString(), Type = networkInterface.NetworkInterfaceType.ToString(), MacAddress = networkInterface.GetPhysicalAddress().ToString() }); 
+                }
+            }
+        }
+
         public string LoadVideoData(string data)
         {
             ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController");
@@ -284,6 +306,27 @@ namespace WinReporter
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             TabController.SelectedIndex = 6;
+        }
+
+        private void FileLocationButton_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime today = DateTime.Today;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.DefaultExt = "pdf";
+            saveFileDialog.FileName = MachineNameLabel.Content.ToString() + "_" + today.ToString("d").Replace("/","-");
+            saveFileDialog.Filter = "Pdf Files (*.pdf)|*.pdf|Text file(*.txt)|*.txt";
+            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                File.WriteAllText(saveFileDialog.FileName, saveFileDialog.DefaultExt);
+                FileLocation.Text = saveFileDialog.FileName;
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            DirectoryWindow win = new DirectoryWindow();
+            win.Show();
         }
     }
 }

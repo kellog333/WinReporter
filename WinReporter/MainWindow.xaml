@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:WinReporter"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
+
         Title="WinReporter" Height="600" Width="1000">
     <Grid>
         <Grid.Background>
@@ -80,6 +81,7 @@
                             <RowDefinition Height="359*" />
                         </Grid.RowDefinitions>
                         <Label x:Name="StorageDriveLabel" Content="Storage Drives" Grid.Row="0" FontSize="35" FontWeight="Bold" Foreground="White" />
+                        <Button Content="Drive Stats" Click="Button_Click_2" Margin="318,0,0,0" Background="#FF3A3838" Foreground="White" FontSize="20" FontFamily="Calibri" Height="27" VerticalAlignment="Center" HorizontalAlignment="Left" Width="140" />
                         <ListView x:Name="StorageDriveList" Grid.Row="1" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
                         </ListView>
                     </Grid>
@@ -139,7 +141,16 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="NetworkTab" Style="{DynamicResource TabItem}" Header="Network" Margin="25,0,-30,0" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
+                <Grid Background="#05100F0F">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="27*" />
+                        <RowDefinition Height="191*" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="NetworkAdapterTitle" Content="Network Adapters" Foreground="White" FontSize="20" FontWeight="Bold" Margin="10,0,0,0" Grid.Row="0"/>
+                    <ListView Grid.Row="1"  x:Name="NetworkList" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
 
+                    </ListView>
+                </Grid>
             </TabItem>
             <TabItem x:Name="ReportTab" Style="{DynamicResource TabItem}" Header="Report" Margin="30,0,-35,0" Background="#00000000" BorderBrush="#00ACACAC" Foreground="White">
                 <Grid Background="#05100F0F">
@@ -158,8 +169,8 @@
                     <Label x:Name="PriceLabel" Content="Price" Foreground="White" FontSize="15" FontWeight="Bold" Grid.Column="0" Grid.Row="1" />
                     <TextBox x:Name="PriceField" Background="#05100F0F" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="30,30,30,0" Height="32" VerticalAlignment="Top"/>
                     <Label x:Name="FileLocationLabel" Content="Location" Foreground="White" FontSize="15" FontWeight="Bold" Grid.Column="0" Grid.Row="3" />
-                    <TextBox x:Name="FileLocation" Background="#05100F0F" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="30,30,30,0" Height="32" VerticalAlignment="Top" />
-                    <Button x:Name="FileLocationButton" Content="..." Background="#FF3A3838" Foreground="White" Grid.Column="1" Grid.Row="3" Margin="0,30,30,0" Height="33" VerticalAlignment="Top" HorizontalAlignment="Right" Width="59" />
+                    <TextBox x:Name="FileLocation" Background="#05100F0F" Foreground="White" FontSize="15" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="30,30,30,0" Height="32" VerticalAlignment="Top" />
+                    <Button x:Name="FileLocationButton" Content="..." Background="#FF3A3838" Foreground="White" Grid.Column="1" Grid.Row="3" Margin="0,30,30,0" Height="33" VerticalAlignment="Top" HorizontalAlignment="Right" Width="59" Click="FileLocationButton_Click" />
                 </Grid>
             </TabItem>
         </TabControl>
